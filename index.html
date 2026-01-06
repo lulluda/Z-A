@@ -28,19 +28,19 @@
             font-family: 'Noto Sans KR', sans-serif;
             background: transparent;
             min-height: 100vh;
-            padding: 10px;
+            padding: 15px;
             color: var(--text-primary);
         }
 
         .widget-container {
-            max-width: 240px;
+            max-width: 360px;
             margin: 0 auto;
             background: var(--bg-card);
-            border-radius: 10px;
+            border-radius: 15px;
             border: 2px solid var(--main-color);
             box-shadow:
-                0 0 15px rgba(40, 216, 161, 0.3),
-                inset 0 0 30px rgba(40, 216, 161, 0.05);
+                0 0 20px rgba(40, 216, 161, 0.3),
+                inset 0 0 45px rgba(40, 216, 161, 0.05);
             overflow: hidden;
             position: relative;
         }
@@ -51,7 +51,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
+            height: 3px;
             background: linear-gradient(90deg,
                 transparent,
                 var(--main-color),
@@ -69,37 +69,37 @@
         /* 헤더 섹션 */
         .header {
             background: linear-gradient(180deg, rgba(40, 216, 161, 0.2) 0%, transparent 100%);
-            padding: 12px 10px;
+            padding: 18px 15px;
             text-align: center;
             position: relative;
         }
 
         .header-logo {
-            font-size: 6px;
+            font-size: 9px;
             color: var(--main-color);
-            letter-spacing: 2px;
-            margin-bottom: 4px;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
         .header-title {
-            font-size: 14px;
+            font-size: 21px;
             font-weight: 900;
             color: var(--main-color);
             text-shadow:
-                0 0 5px rgba(40, 216, 161, 0.5),
-                0 1px 2px rgba(0, 0, 0, 0.3);
-            margin-bottom: 2px;
+                0 0 8px rgba(40, 216, 161, 0.5),
+                0 1px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 3px;
         }
 
         .header-subtitle {
-            font-size: 7px;
+            font-size: 10px;
             color: var(--text-secondary);
         }
 
         /* 레벨 & 진행도 섹션 */
         .level-section {
-            padding: 8px 10px;
+            padding: 12px 15px;
             background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid rgba(40, 216, 161, 0.2);
             border-bottom: 1px solid rgba(40, 216, 161, 0.2);
@@ -109,87 +109,87 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .level-badge {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
 
         .level-icon {
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             background: linear-gradient(135deg, var(--main-color), #1ed896);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 8px;
-            box-shadow: 0 0 8px rgba(40, 216, 161, 0.5);
+            font-size: 12px;
+            box-shadow: 0 0 12px rgba(40, 216, 161, 0.5);
         }
 
         .level-text {
-            font-size: 7px;
+            font-size: 10px;
             color: var(--text-secondary);
         }
 
         .level-text span {
             color: var(--main-color);
             font-weight: 700;
-            font-size: 9px;
+            font-size: 14px;
         }
 
         .exp-text {
-            font-size: 6px;
+            font-size: 9px;
             color: var(--sub-color-2);
         }
 
         .progress-bar {
-            height: 4px;
+            height: 6px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
+            border-radius: 3px;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--main-color), #1ed896);
-            border-radius: 2px;
+            border-radius: 3px;
             transition: width 0.5s ease;
-            box-shadow: 0 0 5px var(--main-color);
+            box-shadow: 0 0 8px var(--main-color);
         }
 
         /* 퀘스트 섹션 */
         .quest-section {
-            padding: 10px;
+            padding: 15px;
         }
 
         .quest-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .quest-title {
-            font-size: 9px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--main-color);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .quest-title::before {
             content: '◆';
-            font-size: 6px;
+            font-size: 9px;
         }
 
         .quest-count {
-            font-size: 6px;
+            font-size: 9px;
             color: var(--text-secondary);
         }
 
@@ -201,18 +201,18 @@
         /* 입력 영역 */
         .quest-input-wrapper {
             display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
 
         .quest-input {
             flex: 1;
-            padding: 6px 8px;
+            padding: 9px 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(40, 216, 161, 0.3);
-            border-radius: 5px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: 7px;
+            font-size: 11px;
             font-family: inherit;
             transition: all 0.3s ease;
         }
@@ -220,7 +220,7 @@
         .quest-input:focus {
             outline: none;
             border-color: var(--main-color);
-            box-shadow: 0 0 8px rgba(40, 216, 161, 0.2);
+            box-shadow: 0 0 12px rgba(40, 216, 161, 0.2);
         }
 
         .quest-input::placeholder {
@@ -228,13 +228,13 @@
         }
 
         .add-btn {
-            padding: 6px 10px;
+            padding: 9px 15px;
             background: linear-gradient(135deg, var(--main-color), #1ed896);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             color: #1a1a2e;
             font-weight: 700;
-            font-size: 7px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: inherit;
@@ -242,20 +242,20 @@
 
         .add-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(40, 216, 161, 0.4);
+            box-shadow: 0 4px 15px rgba(40, 216, 161, 0.4);
         }
 
         /* 퀘스트 리스트 */
         .quest-list {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            max-height: 200px;
+            gap: 8px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
         .quest-list::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
         }
 
         .quest-list::-webkit-scrollbar-track {
@@ -271,11 +271,11 @@
         .quest-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 8px;
+            gap: 9px;
+            padding: 10px 12px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 9px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
@@ -288,7 +288,7 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 2px;
+            width: 3px;
             background: var(--main-color);
             transition: all 0.3s ease;
         }
@@ -296,7 +296,7 @@
         .quest-item:hover {
             background: rgba(40, 216, 161, 0.1);
             border-color: rgba(40, 216, 161, 0.3);
-            transform: translateX(2px);
+            transform: translateX(3px);
         }
 
         .quest-item.completed {
@@ -325,10 +325,10 @@
 
         /* 체크박스 */
         .quest-checkbox {
-            width: 12px;
-            height: 12px;
-            border: 1px solid var(--main-color);
-            border-radius: 3px;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--main-color);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -346,7 +346,7 @@
             content: '✓';
             color: #1a1a2e;
             font-weight: 900;
-            font-size: 7px;
+            font-size: 11px;
             opacity: 0;
             transform: scale(0);
             transition: all 0.2s ease;
@@ -363,33 +363,33 @@
         }
 
         .quest-text {
-            font-size: 7px;
+            font-size: 11px;
             font-weight: 500;
             color: var(--text-primary);
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             transition: all 0.3s ease;
         }
 
         .quest-meta {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
         .deadline-badge {
-            font-size: 5px;
-            padding: 1px 4px;
+            font-size: 8px;
+            padding: 2px 6px;
             background: rgba(59, 59, 59, 0.8);
             color: #ccc;
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
         .link-badge {
-            font-size: 5px;
-            padding: 1px 4px;
+            font-size: 8px;
+            padding: 2px 6px;
             background: rgba(255, 215, 0, 0.2);
             color: var(--sub-color-2);
-            border-radius: 2px;
+            border-radius: 3px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -400,15 +400,15 @@
 
         .quest-delete {
             opacity: 0;
-            width: 14px;
-            height: 14px;
+            width: 21px;
+            height: 21px;
             background: rgba(255, 100, 100, 0.2);
             border: none;
-            border-radius: 3px;
+            border-radius: 4px;
             color: #ff6464;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 8px;
+            font-size: 12px;
         }
 
         .quest-item:hover .quest-delete {
@@ -422,23 +422,23 @@
         /* 빈 상태 */
         .empty-state {
             text-align: center;
-            padding: 20px 10px;
+            padding: 30px 15px;
             color: var(--text-secondary);
         }
 
         .empty-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 36px;
+            margin-bottom: 12px;
             opacity: 0.5;
         }
 
         .empty-text {
-            font-size: 7px;
+            font-size: 11px;
         }
 
         /* 푸터 */
         .footer {
-            padding: 8px 10px;
+            padding: 12px 15px;
             background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid rgba(40, 216, 161, 0.2);
             display: flex;
@@ -447,7 +447,7 @@
         }
 
         .footer-info {
-            font-size: 6px;
+            font-size: 9px;
             color: var(--text-secondary);
         }
 
@@ -456,7 +456,7 @@
         }
 
         .clear-completed {
-            font-size: 6px;
+            font-size: 9px;
             color: var(--main-color);
             background: none;
             border: none;
@@ -470,13 +470,13 @@
         }
 
         /* 반응형 */
-        @media (max-width: 240px) {
+        @media (max-width: 360px) {
             body {
-                padding: 5px;
+                padding: 8px;
             }
 
             .header-title {
-                font-size: 12px;
+                font-size: 18px;
             }
 
             .quest-input-wrapper {
@@ -492,7 +492,7 @@
         @keyframes questAdd {
             from {
                 opacity: 0;
-                transform: translateX(-10px);
+                transform: translateX(-15px);
             }
             to {
                 opacity: 1;
