@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포켓몬스터 Z-A - 일일 퀘스트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-color: #28D8A1;
+            --main-color-light: rgba(40, 216, 161, 0.3);
+            --main-color-dim: rgba(40, 216, 161, 0.15);
+            --sub-color-1: #3B3B3B;
+            --sub-color-2: #FFD700;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: var(--text-primary);
+        }
+
+        .widget-container {
+            max-width: 240px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 2px solid var(--main-color);
+            box-shadow:
+                0 0 15px rgba(40, 216, 161, 0.3),
+                inset 0 0 30px rgba(40, 216, 161, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .widget-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent,
+                var(--main-color),
+                var(--sub-color-2),
+                var(--main-color),
+                transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* 헤더 섹션 */
+        .header {
+            background: linear-gradient(180deg, rgba(40, 216, 161, 0.2) 0%, transparent 100%);
+            padding: 12px 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-logo {
+            font-size: 6px;
+            color: var(--main-color);
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--main-color);
+            text-shadow:
+                0 0 5px rgba(40, 216, 161, 0.5),
+                0 1px 2px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2px;
+        }
+
+        .header-subtitle {
+            font-size: 7px;
+            color: var(--text-secondary);
+        }
+
+        /* 레벨 & 진행도 섹션 */
+        .level-section {
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(40, 216, 161, 0.2);
+            border-bottom: 1px solid rgba(40, 216, 161, 0.2);
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .level-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .level-icon {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--main-color), #1ed896);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 8px;
+            box-shadow: 0 0 8px rgba(40, 216, 161, 0.5);
+        }
+
+        .level-text {
+            font-size: 7px;
+            color: var(--text-secondary);
+        }
+
+        .level-text span {
+            color: var(--main-color);
+            font-weight: 700;
+            font-size: 9px;
+        }
+
+        .exp-text {
+            font-size: 6px;
+            color: var(--sub-color-2);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--main-color), #1ed896);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 5px var(--main-color);
+        }
+
+        /* 퀘스트 섹션 */
+        .quest-section {
+            padding: 10px;
+        }
+
+        .quest-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .quest-title {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--main-color);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .quest-title::before {
+            content: '◆';
+            font-size: 6px;
+        }
+
+        .quest-count {
+            font-size: 6px;
+            color: var(--text-secondary);
+        }
+
+        .quest-count span {
+            color: var(--main-color);
+            font-weight: 700;
+        }
+
+        /* 입력 영역 */
+        .quest-input-wrapper {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .quest-input {
+            flex: 1;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(40, 216, 161, 0.3);
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-size: 7px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .quest-input:focus {
+            outline: none;
+            border-color: var(--main-color);
+            box-shadow: 0 0 8px rgba(40, 216, 161, 0.2);
+        }
+
+        .quest-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .add-btn {
+            padding: 6px 10px;
+            background: linear-gradient(135deg, var(--main-color), #1ed896);
+            border: none;
+            border-radius: 5px;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 7px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(40, 216, 161, 0.4);
+        }
+
+        /* 퀘스트 리스트 */
+        .quest-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .quest-list::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .quest-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .quest-list::-webkit-scrollbar-thumb {
+            background: var(--main-color);
+            border-radius: 2px;
+        }
+
+        .quest-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quest-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--main-color);
+            transition: all 0.3s ease;
+        }
+
+        .quest-item:hover {
+            background: rgba(40, 216, 161, 0.1);
+            border-color: rgba(40, 216, 161, 0.3);
+            transform: translateX(2px);
+        }
+
+        .quest-item.completed {
+            opacity: 0.5;
+            background: rgba(40, 216, 161, 0.05);
+        }
+
+        .quest-item.completed::before {
+            background: var(--text-secondary);
+        }
+
+        .quest-item.completed .quest-text {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .quest-item.urgent::before {
+            background: var(--sub-color-1);
+            box-shadow: 0 0 10px var(--sub-color-1);
+        }
+
+        .quest-item.urgent .deadline-badge {
+            background: var(--sub-color-1);
+            color: white;
+        }
+
+        /* 체크박스 */
+        .quest-checkbox {
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--main-color);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .quest-item.completed .quest-checkbox {
+            background: var(--main-color);
+            border-color: var(--main-color);
+        }
+
+        .quest-checkbox::after {
+            content: '✓';
+            color: #1a1a2e;
+            font-weight: 900;
+            font-size: 7px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .quest-item.completed .quest-checkbox::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .quest-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .quest-text {
+            font-size: 7px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .quest-meta {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .deadline-badge {
+            font-size: 5px;
+            padding: 1px 4px;
+            background: rgba(59, 59, 59, 0.8);
+            color: #ccc;
+            border-radius: 2px;
+        }
+
+        .link-badge {
+            font-size: 5px;
+            padding: 1px 4px;
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--sub-color-2);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .link-badge:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .quest-delete {
+            opacity: 0;
+            width: 14px;
+            height: 14px;
+            background: rgba(255, 100, 100, 0.2);
+            border: none;
+            border-radius: 3px;
+            color: #ff6464;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 8px;
+        }
+
+        .quest-item:hover .quest-delete {
+            opacity: 1;
+        }
+
+        .quest-delete:hover {
+            background: rgba(255, 100, 100, 0.4);
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 20px 10px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 7px;
+        }
+
+        /* 푸터 */
+        .footer {
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(40, 216, 161, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-info {
+            font-size: 6px;
+            color: var(--text-secondary);
+        }
+
+        .footer-info span {
+            color: var(--sub-color-2);
+        }
+
+        .clear-completed {
+            font-size: 6px;
+            color: var(--main-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-family: inherit;
+        }
+
+        .clear-completed:hover {
+            color: #1ed896;
+        }
+
+        /* 반응형 */
+        @media (max-width: 240px) {
+            body {
+                padding: 5px;
+            }
+
+            .header-title {
+                font-size: 12px;
+            }
+
+            .quest-input-wrapper {
+                flex-direction: column;
+            }
+
+            .add-btn {
+                width: 100%;
+            }
+        }
+
+        /* 애니메이션 */
+        @keyframes questAdd {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .quest-item {
+            animation: questAdd 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <!-- 헤더 -->
+        <div class="header">
+            <div class="header-logo">Pokémon</div>
+            <h1 class="header-title">LEGENDS Z-A</h1>
+            <p class="header-subtitle">Daily Quest Tracker</p>
+        </div>
+
+        <!-- 레벨 섹션 -->
+        <div class="level-section">
+            <div class="level-info">
+                <div class="level-badge">
+                    <div class="level-icon" id="levelIcon">1</div>
+                    <div>
+                        <div class="level-text">현재 레벨 <span id="currentLevel">1</span></div>
+                        <div class="exp-text" id="expText">0 / 100 EXP</div>
+                    </div>
+                </div>
+                <div class="quest-count">
+                    완료 <span id="completedCount">0</span> / <span id="totalCount">0</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- 퀘스트 섹션 -->
+        <div class="quest-section">
+            <div class="quest-header">
+                <h2 class="quest-title">일일 퀘스트</h2>
+            </div>
+
+            <!-- 입력 영역 -->
+            <div class="quest-input-wrapper">
+                <input
+                    type="text"
+                    class="quest-input"
+                    id="questInput"
+                    placeholder="새로운 퀘스트를 입력하세요..."
+                    maxlength="100"
+                >
+                <button class="add-btn" id="addBtn">추가</button>
+            </div>
+
+            <!-- 퀘스트 리스트 -->
+            <div class="quest-list" id="questList">
+                <!-- 동적으로 생성됨 -->
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <div class="footer">
+            <div class="footer-info">
+                오늘의 보상: <span>+50 EXP</span>
+            </div>
+            <button class="clear-completed" id="clearBtn">완료된 퀘스트 정리</button>
+        </div>
+    </div>
+
+    <script>
+        // 상태 관리
+        let quests = JSON.parse(localStorage.getItem('pokemon-za-quests')) || [];
+        let exp = parseInt(localStorage.getItem('pokemon-za-exp')) || 0;
+        let level = parseInt(localStorage.getItem('pokemon-za-level')) || 1;
+
+        // DOM 요소
+        const questInput = document.getElementById('questInput');
+        const addBtn = document.getElementById('addBtn');
+        const questList = document.getElementById('questList');
+        const clearBtn = document.getElementById('clearBtn');
+        const levelIcon = document.getElementById('levelIcon');
+        const currentLevelEl = document.getElementById('currentLevel');
+        const expText = document.getElementById('expText');
+        const progressFill = document.getElementById('progressFill');
+        const completedCount = document.getElementById('completedCount');
+        const totalCount = document.getElementById('totalCount');
+
+        // 레벨업에 필요한 경험치 계산
+        function getRequiredExp(lvl) {
+            return lvl * 100;
+        }
+
+        // UI 업데이트
+        function updateUI() {
+            // 레벨 & 경험치 업데이트
+            const requiredExp = getRequiredExp(level);
+            levelIcon.textContent = level;
+            currentLevelEl.textContent = level;
+            expText.textContent = `${exp} / ${requiredExp} EXP`;
+            progressFill.style.width = `${(exp / requiredExp) * 100}%`;
+
+            // 퀘스트 카운트
+            const completed = quests.filter(q => q.completed).length;
+            completedCount.textContent = completed;
+            totalCount.textContent = quests.length;
+
+            // 퀘스트 리스트 렌더링
+            renderQuests();
+
+            // 로컬 스토리지 저장
+            saveData();
+        }
+
+        // 퀘스트 렌더링
+        function renderQuests() {
+            if (quests.length === 0) {
+                questList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎮</div>
+                        <p class="empty-text">등록된 퀘스트가 없습니다.<br>새로운 퀘스트를 추가해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            questList.innerHTML = quests.map((quest, index) => `
+                <div class="quest-item ${quest.completed ? 'completed' : ''} ${quest.urgent ? 'urgent' : ''}"
+                     data-index="${index}">
+                    <div class="quest-checkbox"></div>
+                    <div class="quest-content">
+                        <div class="quest-text">${escapeHtml(quest.text)}</div>
+                        <div class="quest-meta">
+                            ${quest.deadline ? `<span class="deadline-badge">⏰ ${quest.deadline}</span>` : ''}
+                            ${quest.link ? `<span class="link-badge" onclick="event.stopPropagation(); window.open('${quest.link}', '_blank')">📎 참고 자료</span>` : ''}
+                        </div>
+                    </div>
+                    <button class="quest-delete" onclick="event.stopPropagation(); deleteQuest(${index})">×</button>
+                </div>
+            `).join('');
+
+            // 클릭 이벤트 바인딩
+            document.querySelectorAll('.quest-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = parseInt(item.dataset.index);
+                    toggleQuest(index);
+                });
+            });
+        }
+
+        // HTML 이스케이프
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 퀘스트 추가
+        function addQuest() {
+            const text = questInput.value.trim();
+            if (!text) return;
+
+            // 특수 문법 파싱 (예: "할일 @마감:내일 @링크:https://...")
+            let deadline = null;
+            let link = null;
+            let urgent = false;
+            let cleanText = text;
+
+            // 마감일 파싱
+            const deadlineMatch = text.match(/@마감:([^\s]+)/);
+            if (deadlineMatch) {
+                deadline = deadlineMatch[1];
+                cleanText = cleanText.replace(deadlineMatch[0], '').trim();
+                // 오늘/내일이면 긴급 표시
+                if (deadline === '오늘' || deadline === '내일') {
+                    urgent = true;
+                }
+            }
+
+            // 링크 파싱
+            const linkMatch = text.match(/@링크:([^\s]+)/);
+            if (linkMatch) {
+                link = linkMatch[1];
+                cleanText = cleanText.replace(linkMatch[0], '').trim();
+            }
+
+            quests.unshift({
+                text: cleanText,
+                completed: false,
+                deadline,
+                link,
+                urgent,
+                createdAt: new Date().toISOString()
+            });
+
+            questInput.value = '';
+            updateUI();
+        }
+
+        // 퀘스트 토글
+        function toggleQuest(index) {
+            const wasCompleted = quests[index].completed;
+            quests[index].completed = !wasCompleted;
+
+            // 완료 시 경험치 획득
+            if (!wasCompleted) {
+                gainExp(20);
+            } else {
+                // 완료 취소 시 경험치 차감
+                exp = Math.max(0, exp - 20);
+            }
+
+            updateUI();
+        }
+
+        // 퀘스트 삭제
+        function deleteQuest(index) {
+            quests.splice(index, 1);
+            updateUI();
+        }
+
+        // 완료된 퀘스트 정리
+        function clearCompleted() {
+            quests = quests.filter(q => !q.completed);
+            updateUI();
+        }
+
+        // 경험치 획득 & 레벨업
+        function gainExp(amount) {
+            exp += amount;
+            const requiredExp = getRequiredExp(level);
+
+            while (exp >= requiredExp) {
+                exp -= requiredExp;
+                level++;
+                // 레벨업 효과
+                levelIcon.style.animation = 'none';
+                levelIcon.offsetHeight; // reflow
+                levelIcon.style.animation = 'shimmer 0.5s ease';
+            }
+        }
+
+        // 데이터 저장
+        function saveData() {
+            localStorage.setItem('pokemon-za-quests', JSON.stringify(quests));
+            localStorage.setItem('pokemon-za-exp', exp.toString());
+            localStorage.setItem('pokemon-za-level', level.toString());
+        }
+
+        // 이벤트 리스너
+        addBtn.addEventListener('click', addQuest);
+        questInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addQuest();
+        });
+        clearBtn.addEventListener('click', clearCompleted);
+
+        // 초기 렌더링
+        updateUI();
+
+        // ========================================
+        // Notion API 연동을 위한 함수들
+        // ========================================
+
+        // Notion API와 연동하기 위한 설정
+        const NOTION_CONFIG = {
+            // 여기에 Notion Integration Token을 입력하세요
+            // 보안상의 이유로 실제 배포 시에는 백엔드 서버를 통해 처리해야 합니다
+            apiKey: 'YOUR_NOTION_INTEGRATION_TOKEN',
+            databaseId: 'YOUR_DATABASE_ID'
+        };
+
+        // Notion에서 데이터 가져오기
+        async function fetchFromNotion() {
+            try {
+                const response = await fetch(`https://api.notion.com/v1/databases/${NOTION_CONFIG.databaseId}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${NOTION_CONFIG.apiKey}`,
+                        'Notion-Version': '2022-06-28',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sorts: [{ property: 'Created', direction: 'descending' }]
+                    })
+                });
+
+                const data = await response.json();
+
+                // Notion 데이터를 퀘스트 형식으로 변환
+                quests = data.results.map(page => ({
+                    notionId: page.id,
+                    text: page.properties.Name?.title[0]?.plain_text || '',
+                    completed: page.properties.Status?.checkbox || false,
+                    deadline: page.properties.Deadline?.date?.start || null,
+                    link: page.properties.Link?.url || null,
+                    urgent: false, // 마감일 기준으로 판단
+                    createdAt: page.created_time
+                }));
+
+                updateUI();
+            } catch (error) {
+                console.error('Notion 데이터 가져오기 실패:', error);
+            }
+        }
+
+        // Notion에 새 퀘스트 추가
+        async function addToNotion(quest) {
+            try {
+                const response = await fetch('https://api.notion.com/v1/pages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${NOTION_CONFIG.apiKey}`,
+                        'Notion-Version': '2022-06-28',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        parent: { database_id: NOTION_CONFIG.databaseId },
+                        properties: {
+                            Name: {
+                                title: [{ text: { content: quest.text } }]
+                            },
+                            Status: {
+                                checkbox: quest.completed
+                            },
+                            Deadline: quest.deadline ? {
+                                date: { start: quest.deadline }
+                            } : null,
+                            Link: quest.link ? {
+                                url: quest.link
+                            } : null
+                        }
+                    })
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error('Notion에 추가 실패:', error);
+            }
+        }
+
+        // Notion 퀘스트 상태 업데이트
+        async function updateNotionQuest(pageId, completed) {
+            try {
+                const response = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${NOTION_CONFIG.apiKey}`,
+                        'Notion-Version': '2022-06-28',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        properties: {
+                            Status: {
+                                checkbox: completed
+                            }
+                        }
+                    })
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error('Notion 업데이트 실패:', error);
+            }
+        }
+    </script>
+</body>
+</html>
